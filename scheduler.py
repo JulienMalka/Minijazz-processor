@@ -1,8 +1,19 @@
 from operations import *
 from graphs import Graph, Node
 
-def read_exp(eqn):
-    return eqn.op.oplist
+
+def extract_var(arglist):
+    vars_list = []
+    for elem in arglist:
+        if type(elem) == type(Var("dummy")):
+            vars_list.append(elem.name)
+    return vars_list
+
+def read_exp(exp):
+    if exp.opname == "REG":
+        return []
+    else:
+        return extract_var(exp.arglist)
 
 def schedule(program):
     dependency_graph = Graph()
@@ -10,7 +21,7 @@ def schedule(program):
     ordered_equlist = []
     for equation in equations:
         dependency_graph.add_node(Node(equation.var))
-        for var in read_exp(equation):
+        for var in read_exp(equation.op):
             dependency_graph.add_node(Node(var))
             dependency_graph.add_edge(var, equation.var)
 

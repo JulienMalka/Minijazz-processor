@@ -9,7 +9,7 @@ def p_input_id(p):
     '''input : INPUT ID
               | input COMMA ID'''
     if p[1] == "INPUT":
-        p[0] = input(p[2])
+        p[0] = Input(p[2])
     else:
         p[1].add_id(p[3])
         p[0] = p[1]
@@ -19,7 +19,7 @@ def p_output(p):
     '''output : OUTPUT ID
               | output COMMA ID'''
     if p[1] == "OUTPUT":
-        p[0] = output(p[2])
+        p[0] = Output(p[2])
     else:
         p[1].add_id(p[3])
         p[0] = p[1]
@@ -30,7 +30,7 @@ def p_var(p):
         | var COMMA ID
     '''
     if p[1] == "VAR":
-        p[0] = vars(p[2])
+        p[0] = Vars(p[2])
     else:
         p[1].add_id(p[3])
         p[0] = p[1]
@@ -60,7 +60,7 @@ def p_equ(p):
          | ID EQUAL or
          | ID EQUAL and
     '''
-    p[0] = equ(p[1], p[3])
+    p[0] = Equ(p[1], p[3])
 
 
 def p_program(p):
@@ -68,8 +68,8 @@ def p_program(p):
     program : input output var IN equ
              | program equ
     '''
-    if type(p[1]) == type(input("test")):
-        p[0] = program(p[1], p[2], p[3], p[5])
+    if type(p[1]) == type(Input("test")):
+        p[0] = Program(p[1], p[2], p[3], p[5])
     else:
         p[1].add_equ(p[2])
         p[0] = p[1]

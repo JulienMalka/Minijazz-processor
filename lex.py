@@ -86,7 +86,7 @@ _l_2 = AND a b
 _l_3 = AND t_1 c_in
  '''
 
-# Give the lexer some input
+
 lexer.input(data)
 
 # Tokenize

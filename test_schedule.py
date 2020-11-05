@@ -1,4 +1,4 @@
-from par import parser
+from par2 import parser
 from scheduler import schedule
 data = '''
 INPUT a, b, c
