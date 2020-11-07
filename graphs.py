@@ -51,14 +51,9 @@ class Graph:
 
 
 
-
-
-
-
 class Node:
     def __init__(self, label):
         self.label = label
-        self.mark = 0
         self.link_to = []
         self.linked_by = []
 

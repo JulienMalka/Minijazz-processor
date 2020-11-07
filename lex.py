@@ -17,12 +17,8 @@ reserved = [
     "SLICE",
     "VAR",
     "XOR"
-
 ]
 
-
-
-# List of token names.   This is always required
 tokens = [
     "CONST",
     "ID",
@@ -30,11 +26,6 @@ tokens = [
     "COMMA",
     "COLON"
          ] + reserved
-
-
-
-
-
 
 
 # Regular expression rules for simple tokens
@@ -50,10 +41,6 @@ def t_ID(t):
     return t
 
 
-
-
-
-# Define a rule so we can track line numbers
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)

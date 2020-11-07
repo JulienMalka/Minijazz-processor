@@ -1,6 +1,6 @@
 class Env:
     def __init__(self):
-        self.vars = {}
+        self.vars = []
 
     def update_var(self, varname, value):
         self.vars[varname] = value
@@ -83,5 +83,8 @@ class Vars:
 
 
 class Var:
-    def __init__(self, name):
+    def __init__(self, name, length):
         self.name = name
+        self.value = []
+        for i in range(length):
+            self.value.append(None)
