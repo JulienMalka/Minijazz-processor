@@ -60,17 +60,14 @@ def t_error(t):
 lexer = lex.lex()
 
 data = '''
-INPUT a, b, c_in
-OUTPUT s, c_out
+INPUT 
+OUTPUT o
 VAR
-a, b, c_in, s, c_out,
-_t_1, _l_2, _l_3
+  _l_2, c, o
 IN
-t_1 = XOR a b
-s = XOR t_1 c_in
-c_out = OR _l_2 _l_3
-_l_2 = AND a b
-_l_3 = AND t_1 c_in
+c = NOT _l_2
+o = REG c
+_l_2 = REG o
  '''
 
 

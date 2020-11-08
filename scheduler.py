@@ -5,7 +5,7 @@ from graphs import Graph, Node
 def extract_var(arglist):
     vars_list = []
     for elem in arglist:
-        if type(elem) == type(Var("dummy")):
+        if isinstance(elem, Var):
             vars_list.append(elem.name)
     return vars_list
 

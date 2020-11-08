@@ -1,14 +1,44 @@
 class Env:
     def __init__(self):
         self.vars = []
+        self.regs = {}
+
+    def add_var(self, var):
+        var.value = 0
+        self.vars.append(var)
+
+    def add_reg(self, i):
+        self.regs[i] = Reg()
+
+
 
     def update_var(self, varname, value):
-        self.vars[varname] = value
+        for var in self.vars:
+            if var.name == varname:
+                var.value = value
+                break
 
     def get_var(self, varname):
-        return self.vars.get(varname, "ERREUR")
+        for var in self.vars:
+            if var.name == varname:
+                return var.value
+        return "Erreur"
+
+    def update_regs(self):
+        for reg in self.regs.values():
+            reg.tick(self)
 
 
+
+
+class Reg:
+    def __init__(self):
+        self.input = None
+        self.output = 0
+
+    def tick(self, env):
+        self.output = env.get_var(self.input)
+        self.input = None
 
 
 class Program:
@@ -27,10 +57,10 @@ class Exp:
         self.arglist = arglist
         self.opname = opname
 
-    def execute(self, env):
+    def execute(self, env, line):
         argvalues = []
         for arg in self.arglist:
-            if type(arg) == type(Var("test")):
+            if isinstance(arg, Var):
                 argvalues.append(env.get_var(arg.name))
             else:
                 argvalues.append(arg)
@@ -50,6 +80,10 @@ class Exp:
         if self.opname== "XOR":
             return argvalues[0] ^ argvalues[1]
 
+        if self.opname == "REG":
+            env.regs[line].input = argvalues[0]
+            return env.regs[line].output
+
 
 
 
@@ -60,8 +94,8 @@ class Equ:
         self.op = op
 
 class Input:
-    def __init__(self, id):
-        self.ids = [id]
+    def __init__(self):
+        self.ids = []
 
     def add_id(self, id):
         self.ids.append(id)
