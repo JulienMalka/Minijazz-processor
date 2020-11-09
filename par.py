@@ -54,7 +54,10 @@ def p_exp(p):
         | CONCAT arg arg
         | SELECT int arg
         | SLICE int int arg'''
-    p[0] = Exp(p[1], p[2:])
+    if len(p)>=3:
+        p[0] = Exp(p[1], p[2:])
+    else:
+        p[0] = Exp(None, [p[1]])
 
 def p_equ(p):
     '''
