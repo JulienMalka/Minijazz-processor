@@ -1,12 +1,14 @@
 from operations import *
 from graphs import *
 
+
 def extract_var(arglist):
     vars_list = []
     for elem in arglist:
         if isinstance(elem, Var):
             vars_list.append(elem.name)
     return vars_list
+
 
 def read_exp(exp):
     if exp.opname == "REG":
@@ -17,6 +19,7 @@ def read_exp(exp):
         return extract_var([exp.arglist[2]])
     else:
         return extract_var(exp.arglist)
+
 
 def schedule(program):
     dependency_graph = Graph()

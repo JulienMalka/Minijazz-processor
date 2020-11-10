@@ -1,3 +1,5 @@
+from utils import convert_int
+
 
 class Env:
     def __init__(self):
@@ -13,8 +15,6 @@ class Env:
 
     def add_mem(self, i, addr_size, word_size):
         self.memories[i] = Memory(addr_size, word_size)
-
-
 
     def update_var(self, varname, value):
         for var in self.vars:
@@ -37,8 +37,6 @@ class Env:
             mem.tick(self)
 
 
-
-
 class Reg:
     def __init__(self):
         self.input = None
@@ -47,7 +45,6 @@ class Reg:
     def tick(self, env):
         self.output = env.get_var(self.input)
         self.input = None
-
 
 
 class Memory:
@@ -61,18 +58,9 @@ class Memory:
         self.writeaddr = None
         self.writedata = None
 
-
-
-    @staticmethod
-    def convert_int(bit_list):
-        out = 0
-        for bit in bit_list:
-            out = (out << 1) | bit
-        return out
-
     def read_addr(self, addr):
-        if len(addr)>1:
-            addr = Memory.convert_int(addr)
+        if len(addr) > 1:
+            addr = convert_int(addr)
         return self.memory[addr]
 
     def write_addr(self, write, addr, value):
@@ -85,24 +73,20 @@ class Memory:
             self.write = False
             addr = env.get_var(self.writeaddr)
             if len(addr) > 1:
-                addr = Memory.convert_int(addr)
+                addr = convert_int(addr)
             value = env.get_var(self.writedata)
             self.memory[addr] = value
 
 
-
-
-
-
 class Program:
-    def __init__(self, input, output, vars, equ):
-        self.output = output
-        self.vars = vars
+    def __init__(self, input_block, output_block, vars_block, equ):
+        self.output = output_block
+        self.vars = vars_block
         self.equlist = [equ]
-        self.input = input
+        self.input = input_block
 
     def add_equ(self, equ):
-        self.equlist.append((equ))
+        self.equlist.append(equ)
 
 
 class Exp:
@@ -130,14 +114,14 @@ class Exp:
         if self.opname == "NAND":
             return [int(not(argvalues[0][0] and argvalues[1][0]))]
 
-        if self.opname== "XOR":
+        if self.opname == "XOR":
             return [argvalues[0][0] ^ argvalues[1][0]]
 
         if self.opname == "REG":
             env.regs[line].input = self.arglist[0].name
             return env.regs[line].output
 
-        if self.opname == None:
+        if self.opname is None:
             return argvalues[0]
 
         if self.opname == "SELECT":
@@ -160,32 +144,26 @@ class Exp:
             return argvalues[1] if argvalues[0][0] == 0 else argvalues[2]
 
 
-
-
-
-
-
-
-
-
 class Equ:
     def __init__(self, var, op):
         self.var = var
         self.op = op
 
+
 class Input:
     def __init__(self):
         self.ids = []
 
-    def add_id(self, id):
-        self.ids.append(id)
+    def add_id(self, id_):
+        self.ids.append(id_)
+
 
 class Output:
-    def __init__(self, id):
-        self.ids = [id]
+    def __init__(self):
+        self.ids = []
 
-    def add_id(self, id):
-        self.ids.append(id)
+    def add_id(self, id_):
+        self.ids.append(id_)
 
 
 class Vars:
@@ -205,4 +183,3 @@ class Var:
 
     def __repr__(self):
         return self.name
-

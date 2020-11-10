@@ -19,10 +19,13 @@ def p_input(p):
 
 
 def p_output(p):
-    '''output : OUTPUT ID
+    '''output : OUTPUT
+              | OUTPUT ID
               | output COMMA ID'''
     if p[1] == "OUTPUT":
-        p[0] = Output(p[2])
+        p[0] = Output()
+        if len(p) >= 3 and p.slice[2].type == "ID":
+            p[0].add_id(p[2])
     else:
         p[1].add_id(p[3])
         p[0] = p[1]
@@ -77,6 +80,7 @@ def p_arg(p):
         for ch in p[1]:
             bitlist.append(int(ch))
         p[0] = bitlist
+
 
 def p_var(p):
     '''
