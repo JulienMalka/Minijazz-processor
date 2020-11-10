@@ -16,6 +16,7 @@ class Graph:
         for node in self.nodes:
             if node.label == label:
                 return node
+        raise Exception("Node does not exist")
 
 
     def add_edge(self, label1, label2):
@@ -45,7 +46,6 @@ class Graph:
                 if linked_node.linked_by == []:
                     start.append(linked_node)
             node.link_to = []
-
 
         if len(sorted) == len(self.nodes):
             return sorted

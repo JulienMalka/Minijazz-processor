@@ -26,7 +26,7 @@ class Env:
         for var in self.vars:
             if var.name == varname:
                 return var.value
-        return "Erreur"
+        raise Exception("Variable doesn't exist in this environment")
 
     def update_regs(self):
         for reg in self.regs.values():
@@ -202,7 +202,6 @@ class Var:
         self.value = []
         for i in range(length):
             self.value.append(0)
-
 
     def __repr__(self):
         return self.name

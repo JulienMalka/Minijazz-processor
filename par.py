@@ -111,19 +111,3 @@ def p_error(p):
 
 
 parser = yacc.yacc()
-
-# data = '''
-# INPUT
-# OUTPUT o
-# VAR
-#   _l_2, c, o
-# IN
-# c = NOT _l_2
-# o = REG c
-# _l_2 = REG o
-# '''
-#
-#
-#
-# result = parser.parse(data)
-#
