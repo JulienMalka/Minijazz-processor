@@ -6,6 +6,8 @@ I - Installation
 
 Please note that you can find all the code relative to this project on my github repo : https://github.com/JulienMalka/sysnum
 
+As suggested in the project description, here is a website dedicated to my project : http://julienmalka.me/sysnum-simulateur.html
+
 Before running the simulator, please perform this command :
 ```pip install -r requirements.txt```
 
