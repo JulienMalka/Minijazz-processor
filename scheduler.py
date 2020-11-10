@@ -1,6 +1,5 @@
 from operations import *
-from graphs import Graph, Node
-
+from graphs import *
 
 def extract_var(arglist):
     vars_list = []
@@ -12,6 +11,10 @@ def extract_var(arglist):
 def read_exp(exp):
     if exp.opname == "REG":
         return []
+    elif exp.opname == "ROM":
+        return []
+    elif exp.opname == "RAM":
+        return extract_var([exp.arglist[2]])
     else:
         return extract_var(exp.arglist)
 
@@ -24,8 +27,10 @@ def schedule(program):
         for var in read_exp(equation.op):
             dependency_graph.add_node(Node(var))
             dependency_graph.add_edge(var, equation.var)
-
-    ordered_nodes = dependency_graph.topological_sort()
+    try:
+        ordered_nodes = dependency_graph.topological_sort()
+    except CycleError:
+        print("blabla")
     for node in ordered_nodes:
         for equation in equations:
             if equation.var == node.label:

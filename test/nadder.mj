@@ -1,3 +1,5 @@
+n=3
+
 fulladder(a,b,c) = (s, r) where
   s = (a ^ b) ^ c;
   r = (a & b) + ((a ^ b) & c);

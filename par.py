@@ -42,7 +42,7 @@ def p_vars(p):
 def p_exp(p):
     '''
     exp : NOT arg
-        | REG ID
+        | REG var
         | arg
         | AND arg arg
         | OR arg arg
@@ -73,7 +73,10 @@ def p_arg(p):
     if p.slice[1].type == "ID":
         p[0] = Var(p[1], 1)
     else:
-        p[0] = p[1]
+        bitlist = []
+        for ch in p[1]:
+            bitlist.append(int(ch))
+        p[0] = bitlist
 
 def p_var(p):
     '''
@@ -81,7 +84,7 @@ def p_var(p):
          | ID COLON int
     '''
     if len(p)>=3:
-        p[0] = Var(p[1], p[3])
+        p[0] = Var(p[1], p[3][0])
     else:
         p[0] = Var(p[1], 1)
 
@@ -89,7 +92,7 @@ def p_int(p):
     '''
     int : CONST
     '''
-    p[0] = int(p[1])
+    p[0] = [int(p[1])]
 
 def p_program(p):
     '''
@@ -109,18 +112,18 @@ def p_error(p):
 
 parser = yacc.yacc()
 
-data = '''
-INPUT 
-OUTPUT o
-VAR
-  _l_2, c, o
-IN
-c = NOT _l_2
-o = REG c
-_l_2 = REG o
-'''
-
-
-
-result = parser.parse(data)
-print(result)
+# data = '''
+# INPUT
+# OUTPUT o
+# VAR
+#   _l_2, c, o
+# IN
+# c = NOT _l_2
+# o = REG c
+# _l_2 = REG o
+# '''
+#
+#
+#
+# result = parser.parse(data)
+#

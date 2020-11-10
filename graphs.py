@@ -1,3 +1,6 @@
+class CycleError(Exception):
+     pass
+
 class Graph:
     def __init__(self):
         self.nodes = []
@@ -47,7 +50,7 @@ class Graph:
         if len(sorted) == len(self.nodes):
             return sorted
         else:
-            return "ERREUR"
+            raise CycleError
 
 
 

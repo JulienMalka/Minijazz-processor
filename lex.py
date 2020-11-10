@@ -59,23 +59,23 @@ def t_error(t):
 # Build the lexer
 lexer = lex.lex()
 
-data = '''
-INPUT 
-OUTPUT o
-VAR
-  _l_2, c, o
-IN
-c = NOT _l_2
-o = REG c
-_l_2 = REG o
- '''
-
-
-lexer.input(data)
-
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    print(tok)
+# data = '''
+# INPUT
+# OUTPUT o
+# VAR
+#   _l_2, c, o
+# IN
+# c = NOT _l_2
+# o = REG c
+# _l_2 = REG o
+#  '''
+#
+#
+# lexer.input(data)
+#
+# # Tokenize
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break  # No more input
+#     print(tok)

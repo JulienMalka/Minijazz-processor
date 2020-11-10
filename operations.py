@@ -32,13 +32,17 @@ class Env:
         for reg in self.regs.values():
             reg.tick(self)
 
+    def update_memories(self):
+        for mem in self.memories.values():
+            mem.tick(self)
+
 
 
 
 class Reg:
     def __init__(self):
         self.input = None
-        self.output = 0
+        self.output = [0]
 
     def tick(self, env):
         self.output = env.get_var(self.input)
@@ -48,19 +52,43 @@ class Reg:
 
 class Memory:
     def __init__(self, addr_size, word_size):
-        self.memory = [[]]
+        self.memory = []
         nb_case = 2**addr_size
         case = [0] * word_size
         for i in range(nb_case):
             self.memory.append(case.copy())
+        self.write = False
+        self.writeaddr = None
+        self.writedata = None
 
 
+
+    @staticmethod
+    def convert_int(bit_list):
+        out = 0
+        for bit in bit_list:
+            out = (out << 1) | bit
+        return out
 
     def read_addr(self, addr):
+        if len(addr)>1:
+            addr = Memory.convert_int(addr)
         return self.memory[addr]
 
-    def write_addr(self, addr, value):
-        self.memory[addr] = value
+    def write_addr(self, write, addr, value):
+        self.write = write
+        self.writeaddr = addr
+        self.writedata = value
+
+    def tick(self, env):
+        if int(env.get_var(self.write)[0]):
+            self.write = False
+            addr = env.get_var(self.writeaddr)
+            if len(addr) > 1:
+                addr = Memory.convert_int(addr)
+            value = env.get_var(self.writedata)
+            self.memory[addr] = value
+
 
 
 
@@ -106,23 +134,30 @@ class Exp:
             return [argvalues[0][0] ^ argvalues[1][0]]
 
         if self.opname == "REG":
-            env.regs[line].input = argvalues[0]
+            env.regs[line].input = self.arglist[0].name
             return env.regs[line].output
 
         if self.opname == None:
             return argvalues[0]
 
         if self.opname == "SELECT":
-            return [argvalues[1][argvalues[0]]]
+            return [argvalues[1][argvalues[0][0]]]
 
         if self.opname == "CONCAT":
             return argvalues[0] + argvalues[1]
 
         if self.opname == "SLICE":
-            return argvalues[2][argvalues[0]:argvalues[1]]
+            return argvalues[2][argvalues[0][0]:argvalues[1][0]+1]
 
         if self.opname == "RAM":
+            env.memories[line].write_addr(self.arglist[3].name, self.arglist[4].name, self.arglist[5].name)
             return env.memories[line].read_addr(argvalues[2])
+
+        if self.opname == "ROM":
+            return env.memories[line].read_addr(argvalues[2])
+
+        if self.opname == "MUX":
+            return argvalues[1] if argvalues[0][0] == 0 else argvalues[2]
 
 
 
@@ -168,9 +203,7 @@ class Var:
         for i in range(length):
             self.value.append(0)
 
-    def convert_int(self):
-        out = 0
-        for bit in self.value:
-            out = (out << 1) | bit
-        return out
+
+    def __repr__(self):
+        return self.name
 
