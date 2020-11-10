@@ -9,4 +9,4 @@ That was an occasion for me to learn to use the ply library which is a port of y
 
 I think that the project is not so difficult, but I lost a lot of time trying to understand some part of the documentation.
 Some behaviours are sometimes not so clear, but understandable after a little bit of thinking, some are just not documented (ex : MUX).
-Apart from that. 
+Apart from that, I had no real difficulty implementing the simulator.
