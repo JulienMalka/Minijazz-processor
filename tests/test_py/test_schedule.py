@@ -17,4 +17,6 @@ _l_5 = AND _l_4 c
 program = parser.parse(data)
 
 scheduled_program = schedule(program)
-print("lol")
+for eqn in scheduled_program.equlist:
+    print(eqn)
+

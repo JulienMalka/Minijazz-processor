@@ -149,6 +149,10 @@ class Equ:
         self.var = var
         self.op = op
 
+    def __repr__(self):
+        return self.var + " = " + self.op.opname + " " + " ".join([str(elem) for elem in self.op.arglist])
+
+
 
 class Input:
     def __init__(self):
@@ -183,3 +187,4 @@ class Var:
 
     def __repr__(self):
         return self.name
+
