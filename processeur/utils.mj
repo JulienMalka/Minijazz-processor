@@ -1,0 +1,66 @@
+clone_bit<n>(a) = b:[n] where
+    if n = 0 then
+        b = [];
+    else
+        b = a . clone_bit<n-1>(a);
+    end if
+end where
+
+xor_sig<n>(a:[n], b:[n]) = c:[n] where
+    if n = 0 then
+        c = [];
+    else
+        c = (a[0] xor b[0]) . xor_sig<n-1>(a[1..], b[1..])
+    end if
+end where
+
+not_sig<n>(a:[n]) = c:[n] where
+    if n = 0 then
+        c = [];
+    else
+        c = not a[0] . not_sig<n-1>(a[1..])
+    end if
+end where
+
+and_sig<n>(a:[n], b:[n]) = c:[n] where
+    if n = 0 then
+        c = [];
+    else
+        c = (a[0] and b[0]) . and_sig<n-1>(a[1..], b[1..])
+    end if
+end where
+
+or_sig<n>(a:[n], b:[n]) = c:[n] where
+    if n = 0 then
+        c = [];
+    else
+        c = (a[0] or b[0]) . or_sig<n-1>(a[1..], b[1..])
+    end if
+end where
+
+fulladder(a,b,c) = (s, r) where
+  s = (a xor b) xor c;
+  r = (a and b) or ((a xor b) and c);
+end where
+
+
+adder<n>(a:[n], b:[n], c_in) = (o:[n], c_out) where
+    if n=0 then
+        o=[];
+        c_out = 0
+    else
+        (s_n1, c_n1) = adder<n-1>(a[1..], b[1..], c_in);
+        (s_n, c_out) = fulladder(a[0], b[0], c_n1);
+        o = s_n . s_n1
+    end if
+end where
+
+is_zero<n>(a:[n], acc) = res where
+    if n = o then
+        res = acc;
+    else
+        new_acc = acc or a[0];
+        res = is_zero<n-1>(a[1..], new_acc);
+    end if
+end where
+

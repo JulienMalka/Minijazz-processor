@@ -1,0 +1,6 @@
+comparator(a_31, b_31, diff_31, carry, zero, op:[3]) = r where
+    val_1 = (((not a_31) and b_31 )or ((not diff_31) and ((not a_31) xor b_31)));
+    val_2 = ((a_31 and (not b_31) )or (diff_31 and ((not a_31) xor b_31)));
+    r = mux3bit<1>(zero, val_1, val_2, not zero, zero, carry, not carry, zero, op);
+end where
+

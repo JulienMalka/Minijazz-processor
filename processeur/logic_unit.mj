@@ -1,0 +1,8 @@
+logic_unit(a:[32], b:[32], op:[2]) = r:[32] where
+    val_1 = not_sig<32>(or_sig<32>(a, b));
+    val_2 = and_sig<32>(a, b);
+    val_3 = or_sig<32>(a, b);
+    val_4 = xor_sig<32>(a, b);
+    r = mux2bit<32>(val_1, val_2, val_3, val_4, op);
+end where
+

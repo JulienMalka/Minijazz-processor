@@ -1,0 +1,11 @@
+add_sub(a:[32], b:[32], sub_mode) = (carry, zero, r:[32]) where
+    s = clone_bit<32>(sub_mode);
+    b_s = xor_sig<32>(b, s);
+    (temp, c) = adder<33>(0.a, 0.b_s, 0);
+    zero_sig = clone_bit<32>(0);
+    (result, c) = adder<33>(temp, zero_sig . sub_mode, 0);
+    carry = result[32];
+    r = result[0..31];
+    zero = is_zero<32>(r, 0);
+end where
+

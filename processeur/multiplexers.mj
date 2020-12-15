@@ -1,0 +1,24 @@
+muxn<n>(a,b:[n],c:[n]) = o:[n] where
+    if n = 0 then
+        o = [];
+    else
+        o = mux(a,b[0],c[0]) . muxn<n-1>(a,b[1..],c[1..])
+    end if
+end where
+
+mux3bit<n>(a:[n], b:[n], c:[n], d:[n], e:[n], f:[n], g:[n], h:[n], sel:[3]) = res:[n] where
+    r1_1 = muxn<n>(sel[0], a, b);
+    r1_2 = muxn<n>(sel[0], c, d);
+    r1_3 = muxn<n>(sel[0], e, g);
+    r1_4 = muxn<n>(sel[0], g, h);
+    r2_1 = muxn<n>(sel[1], r1_1, r1_2);
+    r2_2 = muxn<n>(sel[1], r1_3, r1_4);
+    res = muxn<n>(sel[2], r2_1, r2_2);
+end where
+
+mux2bit<n>(a:[n], b:[n], c:[n], d:[n], sel:[2]) = res:[n] where
+    r1_1 = muxn<n>(sel[0], a, b);
+    r1_2 = muxn<n>(sel[0], c, d);
+    res = muxn<n>(sel[1], r1_1, r1_2);
+end where
+

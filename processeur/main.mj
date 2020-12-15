@@ -1,0 +1,3 @@
+main(a:[32], b:[32]) = c:[32] where
+    c = xor_sig<32>(a,b)
+end where
