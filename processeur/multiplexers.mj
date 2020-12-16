@@ -22,3 +22,16 @@ mux2bit<n>(a:[n], b:[n], c:[n], d:[n], sel:[2]) = res:[n] where
     res = muxn<n>(sel[1], r1_1, r1_2);
 end where
 
+
+mux4bit<n>(a:[n], b:[n], c:[n], d:[n], e:[n], f:[n], g:[n], h:[n], i:[n], j:[n], k:[n], l:[n], m:[n], n:[n], o:[n], p:[n], sel:[4]) = res:[n] where
+    r1_1 = mux3bit<n>(a, b, c, d, e, f, g, h, sel[0..2]);
+    r1_2 = mux3bit<n>(i, j, k, l, m, n, o, p, sel[0..2]);
+    res = muxn<n>(sel[3], r1_1, r1_2);
+end where
+
+mux5bit<n>(o_1:[n], o_2:[n], o_3:[n], o_4:[n], o_5:[n], o_6:[n], o_7:[n], o_8:[n], o_9:[n], o_10:[n], o_11:[n], o_12:[n], o_13:[n], o_14:[n], o_15:[n], o_16:[n], o_17:[n], o_18:[n], o_19:[n], o_20:[n], o_21:[n], o_22:[n], o_23:[n], o_24:[n], o_25:[n], o_26:[n], o_27:[n], o_28:[n], o_29:[n], o_30:[n], o_31:[n], o_32:[n], sel:[5]) = res:[n] where
+    r1_1 = mux4bit<n>(o_1, o_2, o_3, o_4, o_5, o_6, o_7, o_8, o_9, o_10, o_11, o_12, o_13, o_14, o_15, o_16, sel[0..3]);
+    r1_2 = mux4bit<n>(o_17, o_18, o_19, o_20, o_21, o_22, o_23, o_24, o_25, o_26, o_27, o_28, o_29, o_30, o_31, o_32, sel[0..3]);
+    res = muxn<n>(sel[4], r1_1, r1_2);
+end where
+
