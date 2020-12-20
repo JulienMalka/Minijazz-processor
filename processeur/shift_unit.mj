@@ -1,0 +1,4 @@
+shift_unit(a:[32], b:[5], op:[3]) = r:[32] where
+r = a
+end where
+

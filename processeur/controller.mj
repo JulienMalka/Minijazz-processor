@@ -1,0 +1,96 @@
+next_state_decode(op:[6], opx:[6]) = next_state:[4] where
+FETCH1 = [].0.0.0.0;
+    FETCH2 = [].0.0.0.1;
+    DECODE = [].0.0.1.0;
+    STORE = [].0.0.1.1;
+    I_OP = [].0.1.0.0;
+    R_OP = [].0.1.0.1;
+    LOAD1 = [].0.1.1.0;
+    LOAD2 = [].0.1.1.1;
+    BREAK = [].1.0.0.0;
+    BRANCH = [].1.0.0.1;
+    CALL = [].1.0.1.0;
+    JUMP = [].1.0.1.1;
+    RI_OP = [].1.1.0.0;
+    UI_OP = [].1.1.0.1;
+    SHIFT = [].1.1.1.0;
+opx_res = mux6bit<4>( R_OP, R_OP, R_OP, R_OP, R_OP, JUMP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, JUMP, R_OP, R_OP, R_OP, R_OP, RI_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, RI_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, R_OP, BREAK, R_OP, R_OP, R_OP, R_OP, R_OP, RI_OP, R_OP, R_OP, R_OP, R_OP, R_OP, op);
+next_state = mux6bit<4>( CALL, I_OP, I_OP, I_OP, I_OP, I_OP, BRANCH, I_OP, I_OP, I_OP, I_OP, I_OP, UI_OP, I_OP, BRANCH, I_OP, I_OP, I_OP, I_OP, I_OP, UI_OP, STORE, BRANCH, LOAD1, I_OP, I_OP, I_OP, I_OP, UI_OP, I_OP, BRANCH, I_OP, I_OP, I_OP, I_OP, I_OP, I_OP, I_OP, BRANCH, I_OP, I_OP, I_OP, I_OP, I_OP, I_OP, I_OP, BRANCH, I_OP, I_OP, I_OP, I_OP, I_OP, I_OP, I_OP, BRANCH, I_OP, I_OP, I_OP, opx_res, I_OP, I_OP, I_OP, I_OP, I_OP, opx);
+end where
+
+
+controller_next_state(current_state:[4], op:[6], opx:[6]) = next_state:[4] where
+    FETCH1 = [].0.0.0.0;
+    FETCH2 = [].0.0.0.1;
+    DECODE = [].0.0.1.0;
+    STORE = [].0.0.1.1;
+    I_OP = [].0.1.0.0;
+    R_OP = [].0.1.0.1;
+    LOAD1 = [].0.1.1.0;
+    LOAD2 = [].0.1.1.1;
+    BREAK = [].1.0.0.0;
+    BRANCH = [].1.0.0.1;
+    CALL = [].1.0.1.0;
+    JUMP = [].1.0.1.1;
+    RI_OP = [].1.1.0.0;
+    UI_OP = [].1.1.0.1;
+    SHIFT = [].1.1.1.0;
+    next_state = mux4bit<4>(FETCH2, DECODE, next_state_decode(op, opx), FETCH1, FETCH1, FETCH1, LOAD2, FETCH1, BREAK, FETCH1, FETCH1, FETCH1, FETCH1, FETCH1, FETCH1, FETCH1, current_state);
+end where
+
+
+
+
+
+
+
+out_logic(current_state:[4], op:[6], opx:[6]) = (ir_en, branch_op, pc_add_imm, pc_en, pc_sel_a, pc_sel_imm, rf_wren, sel_addr, sel_b, sel_mem, sel_pc, sel_ra, sel_rC, imm_signed, read, write) where
+FETCH1 = [].0.0.0.0;
+    FETCH2 = [].0.0.0.1;
+    DECODE = [].0.0.1.0;
+    STORE = [].0.0.1.1;
+    I_OP = [].0.1.0.0;
+    R_OP = [].0.1.0.1;
+    LOAD1 = [].0.1.1.0;
+    LOAD2 = [].0.1.1.1;
+    BREAK = [].1.0.0.0;
+    BRANCH = [].1.0.0.1;
+    CALL = [].1.0.1.0;
+    JUMP = [].1.0.1.1;
+    RI_OP = [].1.1.0.0;
+    UI_OP = [].1.1.0.1;
+    SHIFT = [].1.1.1.0;
+ir_en = mux(is_equal<4>(current_state, FETCH2, 1), 0, 1);
+branch_op = mux(is_equal<4>(current_state, BRANCH, 1), 0, 1);
+pc_add_imm = mux(is_equal<4>(current_state, BRANCH, 1), 0, 1);
+pc_en = mux4bit<1>( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, current_state);
+pc_sel_a = mux(is_equal<4>(current_state, JUMP, 1), 0, 1);
+pc_sel_imm = mux(is_equal<4>(current_state, CALL, 1), 0, 1);
+rf_wren = mux4bit<1>( 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, current_state);
+sel_addr = mux3bit<1>( 0, 0, 0, 1, 0, 0, 1, 0, current_state[0..2]);
+sel_b = mux4bit<1>( 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, current_state);
+sel_mem = mux(is_equal<4>(current_state, LOAD2, 1), 0, 1);
+sel_pc = mux(is_equal<4>(current_state, CALL, 1), 0, 1);
+sel_ra = mux(is_equal<4>(current_state, CALL, 1), 0, 1);
+sel_rC = mux4bit<1>( 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, current_state);
+read = mux3bit<1>( 0, 1, 0, 0, 0, 0, 1, 0, current_state[0..2]);
+write = mux(is_equal<4>(current_state, STORE, 1), 0, 1);
+imm_signed = mux3bit<1>( 0, 0, 0, 1, 1, 0, 1, 0, current_state[0..2]);
+end where
+
+
+alu_logic(op:[6], opx:[6]) = op_alu:[6] where
+op_alu_opx = mux6bit<6>([].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.0.0, [].0.0.0.0.0.0, [].0.1.1.0.0.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.0.1, [].0.0.0.0.0.0, [].0.1.1.0.1.0, [].0.0.0.0.0.0, [].1.1.0.0.1.0, [].1.1.0.0.1.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.1.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.1.0.0.1.1, [].1.1.0.0.1.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.1.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.1.0.0.0, [].1.1.0.1.1.1, [].1.1.0.1.1.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, opx);
+op_alu = mux6bit<6>([].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.0.1, [].0.0.0.0.0.0, [].0.1.1.0.0.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.1.0, [].0.0.0.0.0.0, [].0.1.1.0.1.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].1.0.0.0.1.1, [].0.0.0.0.0.0, [].0.1.1.0.1.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.1.1.1.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.1.1.1.0.1, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.1.1.1.1.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, op_alu_opx, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, [].0.0.0.0.0.0, op);
+end where
+
+controller(reset_n, op:[6], opx:[6])  = (ir_en, branch_op, pc_add_imm, pc_en, pc_sel_a, pc_sel_imm, rf_wren, sel_addr, sel_b, sel_mem, sel_pc, sel_ra, sel_rC, imm_signed, read, write, op_alu:[6]) where
+FETCH1 = [].0.0.0.0;
+state = muxn<4>(reset_n, regn<4>(next_state), FETCH1);
+next_state = controller_next_state(state, op, opx);
+(ir_en, branch_op, pc_add_imm, pc_en, pc_sel_a, pc_sel_imm, rf_wren, sel_addr, sel_b, sel_mem, sel_pc, sel_ra, sel_rC, imm_signed, read, write) = out_logic(state, op, opx);
+op_alu = alu_logic(op, opx);
+end where
+
+
+
