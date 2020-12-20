@@ -1,0 +1,20 @@
+CPU(reset_n, rddata:[32]) = (write, read, address:[16], wrdata:[32]) where
+alu_res = ALU(op_alu, a, op_b);
+branch_taken = branch_op and alu_res[0];
+(ir_en, branch_op, pc_add_imm, pc_wren, pc_sel_a, pc_sel_imm, rf_wren, sel_addr, sel_b, sel_mem, sel_pc, sel_ra, sel_rC, imm_signed, read, write, op_alu) = controller(reset_n, instr[0..5], instr[11..16]);
+imm = extend(instr[6..21], imm_signed);
+instr = instruction_register(ir_en, rddata);
+address = muxn<16>(sel_addr, pc_addr[0..15], alu_res[0..15]);
+aw = muxn<5>(sel_rC, SYNTHESIZED_WIRE_0, instr[17..21]);
+op_b = muxn<32>(sel_b, imm, b);
+SYNTHESIZED_WIRE_3 = muxn<32>(SYNTHESIZED_WIRE_1, alu_res, SYNTHESIZED_WIRE_2);
+SYNTHESIZED_WIRE_2 = muxn<32>(sel_mem, pc_addr, rddata);
+SYNTHESIZED_WIRE_0 = muxn<5>(sel_ra, instr[22..26], ra);
+pc_en = pc_wren or branch_taken;
+pc_addr = PC(reset_n, pc_en, pc_sel_a, pc_sel_imm, pc_add_imm, instr[6..21], a[0..15]);
+SYNTHESIZED_WIRE_1 = sel_pc or sel_mem;
+(a, b)  = register_file(instr[27..31], instr[22..26], aw, rf_wren, SYNTHESIZED_WIRE_3);
+wrdata = b;
+ra = [].1.1.1.1.1;
+end where
+
