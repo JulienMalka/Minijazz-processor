@@ -1,0 +1,6 @@
+decoder(address:[16]) = (cs_ROM, cs_RAM) where
+    bigger_1000 = address[13];
+    cs_ROM = not bigger_1000;
+    cs_RAM = bigger_1000;
+end where
+

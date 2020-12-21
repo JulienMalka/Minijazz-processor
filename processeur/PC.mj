@@ -1,13 +1,13 @@
 PC(reset_n, en, sel_a, sel_imm, add_imm, imm:[16], a:[16]) = addr:[32] where
-addr = regn<32>(next_addr);
-zero= clone_bit<32>(0);
-(added_addr, c_out) = adder<32>(addr, [].0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.imm, 0);
-(addr_plus_four, c_out) = adder<32>(addr, [].0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.0.0, 0);
-sel_a_value = muxn<32>(sel_a, addr_plus_four, 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.a);
-sel_imm_value = muxn<32>(sel_imm, sel_a_value, 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.imm[0..13].0.0);
-enabled = muxn<32>(add_imm, sel_imm_value, added_addr);
-not_reset = muxn<32>(en, addr, enabled);
-next_addr = muxn<32>(reset_n, not_reset, zero);
+    addr = regn<32>(next_addr);
+    zero= clone_bit<32>(0);
+    (added_addr, c_out) = adder<32>(addr, [].0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.imm, 0);
+    (addr_plus_four, c_out) = adder<32>(addr, [].0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.0.0, 0);
+    sel_a_value = muxn<32>(sel_a, addr_plus_four, 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.a);
+    sel_imm_value = muxn<32>(sel_imm, sel_a_value, 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.imm[0..13].0.0);
+    enabled = muxn<32>(add_imm, sel_imm_value, added_addr);
+    not_reset = muxn<32>(en, addr, enabled);
+    next_addr = muxn<32>(reset_n, not_reset, zero);
 end where
 
 
