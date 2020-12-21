@@ -1,1 +1,6 @@
-test
+RAM_block(cs, read, write, address:[10], wrdata:[32]) = rddata:[32] where
+    address_reg = regn<10>(address);
+    rddata =ram<10 , 32>(address_reg, write, address, wrdata);
+end where
+
+

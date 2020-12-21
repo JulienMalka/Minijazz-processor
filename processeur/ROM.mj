@@ -1,0 +1,5 @@
+ROM_block(cs, read, address:[10]) = rddata:[32] where
+    address_reg = regn<10>(address);
+    rddata = rom<10 , 32 >(address_reg);
+end where
+

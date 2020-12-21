@@ -1,3 +1,9 @@
-main(a:[32], b:[32]) = c:[32] where
-    c = xor_sig<32>(a,b)
+main(reset_n) = () where
+(cs_ROM, cs_RAM) = decoder(address);
+(write, read, address, wrdata) = CPU(reset_n, rddata);
+rddata_ram = RAM_block(cs_RAM, read, write, address[0..9], wrdata);
+rddata_rom = ROM_block(cs_ROM, read, address[0..9]);
+cs_ROM_reg = reg(cs_ROM);
+rddata = muxn<32>(cs_ROM_reg, rddata_ram, rddata_rom);
 end where
+
