@@ -3,12 +3,12 @@ from utils import convert_int
 
 class Env:
     def __init__(self):
-        self.vars = []
+        self.vars = {}
         self.regs = {}
         self.memories = {}
 
     def add_var(self, var):
-        self.vars.append(var)
+        self.vars[var.name] = var
 
     def add_reg(self, i):
         self.regs[i] = Reg()
@@ -16,17 +16,11 @@ class Env:
     def add_mem(self, i, addr_size, word_size):
         self.memories[i] = Memory(addr_size, word_size)
 
-    def update_var(self, varname, value):
-        for var in self.vars:
-            if var.name == varname:
-                var.value = value
-                break
+    def update_var(self, varname, new_value):
+        self.vars[varname].value = new_value
 
     def get_var(self, varname):
-        for var in self.vars:
-            if var.name == varname:
-                return var.value
-        raise Exception("Variable doesn't exist in this environment")
+        return self.vars[varname].value
 
     def update_regs(self):
         for reg in self.regs.values():

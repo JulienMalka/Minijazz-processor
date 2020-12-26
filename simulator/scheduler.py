@@ -1,6 +1,6 @@
 from operations import *
 from graphs import *
-
+import pickle
 
 def extract_var(arglist):
     vars_list = []
@@ -25,6 +25,7 @@ def schedule(program):
     dependency_graph = Graph()
     equations = program.equlist
     ordered_equlist = []
+    i = 0
     for equation in equations:
         dependency_graph.add_node(Node(equation.var))
         for var in read_exp(equation.op):
@@ -40,5 +41,8 @@ def schedule(program):
                 ordered_equlist.append(equation)
 
     program.equlist = ordered_equlist
+    with open('program.save', 'wb') as program_file:
+        # Step 3
+        pickle.dump(program, program_file)
     return program
 

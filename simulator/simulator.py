@@ -4,7 +4,7 @@ from scheduler import schedule
 import click
 import sys
 from utils import convert_int
-
+import pickle
 
 def simulator(program, inputs, steps):
     env = Env()
@@ -46,7 +46,10 @@ def format_input(i):
 @click.option('--netlist', help="The input netlist to simulate", required=True, type=click.File())
 @click.option('--steps', help="The number of steps to simulate", required=True)
 @click.option('--inputs', help="The inputs", type=click.File())
-def main(netlist, steps, inputs=None):
+@click.option('--ROM', help="The rom initialisation", type=click.File())
+@click.option('--scheduled', help="Scheduled program dump")
+
+def main(netlist, steps, inputs=None, rom=None, scheduled=None):
     steps = int(steps)
     if steps <= 0:
         print("Unexpected value of steps. Try again.")
@@ -74,8 +77,17 @@ def main(netlist, steps, inputs=None):
         for step in inputs_formatted:
             for i in range(len(step)):
                 step[i] = format_input(step[i])
+    if rom is not None:
+        ROM_data = rom.read()
+        ROM_lines = ROM_data.split("\n")
+        print(len(ROM_lines))
+        print(ROM_lines)
 
-    scheduled_program = schedule(program)
+    if scheduled is not None:
+        with open(scheduled, 'rb') as program_file:
+            scheduled_program = pickle.load(program_file)
+    else:
+        scheduled_program = schedule(program)
     simulator(scheduled_program, inputs_formatted, steps)
 
 

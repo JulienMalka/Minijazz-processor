@@ -3,20 +3,15 @@ class CycleError(Exception):
 
 class Graph:
     def __init__(self):
-        self.nodes = []
+        self.nodes = {}
 
 
     def add_node(self, n):
-        for node in self.nodes:
-            if node.label == n.label:
-                return
-        self.nodes.append(n)
+        if n.label not in self.nodes:
+            self.nodes[n.label] = n
 
     def find_node(self, label):
-        for node in self.nodes:
-            if node.label == label:
-                return node
-        raise Exception("Node does not exist")
+        return self.nodes[label]
 
 
     def add_edge(self, label1, label2):
@@ -27,7 +22,7 @@ class Graph:
 
     def find_roots(self):
         roots = []
-        for node in self.nodes:
+        for node in self.nodes.values():
             if node.linked_by == []:
                 roots.append(node)
         return roots
@@ -60,3 +55,5 @@ class Node:
         self.link_to = []
         self.linked_by = []
 
+    def __repr__(self):
+        return self.label
