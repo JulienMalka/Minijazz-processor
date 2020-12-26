@@ -42,7 +42,6 @@ def schedule(program):
 
     program.equlist = ordered_equlist
     with open('program.save', 'wb') as program_file:
-        # Step 3
         pickle.dump(program, program_file)
     return program
 

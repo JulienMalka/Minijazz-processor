@@ -6,7 +6,7 @@ import sys
 from utils import convert_int
 import pickle
 
-def simulator(program, inputs, steps):
+def simulator(program, inputs, steps, rom=None):
     env = Env()
     for var in program.vars.varlist:
         env.add_var(var)
@@ -16,7 +16,12 @@ def simulator(program, inputs, steps):
         if equation.op.opname == "REG":
             env.add_reg(i)
         if equation.op.opname == "RAM" or equation.op.opname == "ROM":
-            env.add_mem(i, equation.op.arglist[0][0], equation.op.arglist[1][0])
+            if equation .op.opname == "ROM" and rom is not None:
+                env.add_mem(i, equation.op.arglist[0][0], equation.op.arglist[1][0], rom)
+            else:
+                env.add_mem(i, equation.op.arglist[0][0], equation.op.arglist[1][0])
+
+
 
     for step in range(steps):
         print("Cycle n° : " + str(step + 1))
@@ -41,6 +46,13 @@ def format_input(i):
         out.append(int(ch))
     return out
 
+def format_rom(rom_lines):
+    result = []
+    for i in range(len(rom_lines)-2):
+        rom_hex = int(rom_lines[i][9:17], 16)
+        bitstr = '{:032b}'.format(rom_hex)
+        result.append([int(e) for e in bitstr])
+    return result
 
 @click.command()
 @click.option('--netlist', help="The input netlist to simulate", required=True, type=click.File())
@@ -82,13 +94,14 @@ def main(netlist, steps, inputs=None, rom=None, scheduled=None):
         ROM_lines = ROM_data.split("\n")
         print(len(ROM_lines))
         print(ROM_lines)
+        rom = format_rom(ROM_lines)
 
     if scheduled is not None:
         with open(scheduled, 'rb') as program_file:
             scheduled_program = pickle.load(program_file)
     else:
         scheduled_program = schedule(program)
-    simulator(scheduled_program, inputs_formatted, steps)
+    simulator(scheduled_program, inputs_formatted, steps, rom)
 
 
 if __name__ == "__main__":

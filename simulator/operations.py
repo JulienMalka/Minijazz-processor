@@ -13,8 +13,10 @@ class Env:
     def add_reg(self, i):
         self.regs[i] = Reg()
 
-    def add_mem(self, i, addr_size, word_size):
+    def add_mem(self, i, addr_size, word_size, init=None):
         self.memories[i] = Memory(addr_size, word_size)
+        if init is not None:
+            self.memories[i].memory = init
 
     def update_var(self, varname, new_value):
         self.vars[varname].value = new_value
@@ -63,13 +65,14 @@ class Memory:
         self.writedata = value
 
     def tick(self, env):
-        if int(env.get_var(self.write)[0]):
-            self.write = False
-            addr = env.get_var(self.writeaddr)
-            if len(addr) > 1:
-                addr = convert_int(addr)
-            value = env.get_var(self.writedata)
-            self.memory[addr] = value
+        if self.write:
+            if int(env.get_var(self.write)[0]):
+                self.write = False
+                addr = env.get_var(self.writeaddr)
+                if len(addr) > 1:
+                    addr = convert_int(addr)
+                value = env.get_var(self.writedata)
+                self.memory[addr] = value
 
 
 class Program:
