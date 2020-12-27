@@ -1,6 +1,6 @@
 extend(imm16:[16], signed) = imm32:[32] where
     zero_16 = clone_bit<16>(0);
-    rmbit_16 = clone_bit<16>(imm16[15]);
+    rmbit_16 = clone_bit<16>(imm16[0]);
     imm32 = muxn<32>(signed, zero_16.imm16, rmbit_16.imm16);
 end where
 

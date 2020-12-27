@@ -68,7 +68,7 @@ is_equal<n>(a:[n], b:[n], acc) = res where
     if n = 0 then
         res = acc;
     else
-        new_acc = (a[0] and b[0]) or (not a[0] and not b[0]);
+        new_acc = ((a[0] and b[0]) or (not a[0] and not b[0])) and acc;
         res = is_equal<n-1>(a[1..], b[1..], new_acc);
     end if
 end where

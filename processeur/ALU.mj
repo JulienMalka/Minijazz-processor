@@ -1,10 +1,10 @@
 ALU(op:[6], a:[32], b:[32]) = s:[32] where
-    (carry, zero, r1) = add_sub(a, b, op[3]);
-    r2 = comparator(a[31], b[31], r1[31], carry, zero, op[0..2]);
+    (carry, zero, r1) = add_sub(a, b, op[2]);
+    r2 = comparator(a[30], b[0], r1[0], carry, zero, op[3..5]);
     r2_2 = clone_bit<31>(0).r2;
-    r3 = logic_unit(a, b, op[0..1]);
-    r4 = shift_unit(a, b[0..4], op[0..2]);
-    s = mux2bit<32>(r1, r2_2, r3, r4, op[4..5]);
+    r3 = logic_unit(a, b, op[4..5]);
+    r4 = shift_unit(a, b[27..31], op[3..5]);
+    s = mux2bit<32>(r1, r2_2, r3, r4, op[0..1]);
 end where
 
 
