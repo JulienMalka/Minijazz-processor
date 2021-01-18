@@ -16,7 +16,7 @@ def simulator(program, inputs, steps, rom=None):
         if equation.op.opname == "REG":
             env.add_reg(i)
         if equation.op.opname == "RAM" or equation.op.opname == "ROM":
-            if equation .op.opname == "ROM" and rom is not None:
+            if equation.op.opname == "ROM" and rom is not None:
                 env.add_mem(i, equation.op.arglist[0][0], equation.op.arglist[1][0], rom)
             else:
                 env.add_mem(i, equation.op.arglist[0][0], equation.op.arglist[1][0])
@@ -93,7 +93,7 @@ def main(netlist, steps, inputs=None, rom=None, scheduled=None):
         ROM_data = rom.read()
         ROM_lines = ROM_data.split("\n")
         print(len(ROM_lines))
-        print(ROM_lines)
+        #print(ROM_lines)
         rom = format_rom(ROM_lines)
 
     if scheduled is not None:

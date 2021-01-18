@@ -73,6 +73,7 @@ class Memory:
                     addr = convert_int(addr)
                 value = env.get_var(self.writedata)
                 self.memory[addr] = value
+        self.write = False
 
 
 class Program:
