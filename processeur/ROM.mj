@@ -1,5 +1,6 @@
-ROM_block(cs, read, address:[10]) = rddata:[32] where
-    address_reg = regn<10>(address);
+ROM_block(cs, read, address:[10]) = (rddata:[32], address_reg:[10]) where
+    address_reg = regn<10>(address_next);
+    address_next = muxn<10>(cs, address_reg, address);
     rddata = rom<10 , 32 >(address_reg);
 end where
 

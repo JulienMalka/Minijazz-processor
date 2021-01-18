@@ -57,7 +57,7 @@ end where
 
 is_zero<n>(a:[n], acc) = res where
     if n = 0 then
-        res = acc;
+        res = not acc;
     else
         new_acc = acc or a[0];
         res = is_zero<n-1>(a[1..], new_acc);

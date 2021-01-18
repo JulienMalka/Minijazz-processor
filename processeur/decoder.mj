@@ -1,5 +1,5 @@
 decoder(address:[16]) = (cs_ROM, cs_RAM) where
-    bigger_1000 = address[2] or address[1] or address[0];
+    bigger_1000 = address[3] or address[2] or address[1] or address[0];
     cs_ROM = not bigger_1000;
     cs_RAM = bigger_1000;
 end where

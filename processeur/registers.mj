@@ -6,7 +6,7 @@ regn<n>(i:[n]) = o:[n] where
     end if
 end where
 
-register_file(aa:[5], ab:[5], wa:[5], wren, wrdata:[32]) = (a:[32], b:[32]) where
+register_file(aa:[5], ab:[5], wa:[5], wren, wrdata:[32]) = (a:[32], b:[32], t0:[32]) where
     reg_1 = regn<32>(reg_1_next);
     reg_1_next = muxn<32>(wren and is_equal<5>(wa, [].0.0.0.0.1, 1), reg_1, wrdata);
     reg_2 = regn<32>(reg_2_next);
@@ -72,6 +72,7 @@ register_file(aa:[5], ab:[5], wa:[5], wren, wrdata:[32]) = (a:[32], b:[32]) wher
     zero = clone_bit<32>(0);
     a = mux5bit<32>(zero, reg_1, reg_2, reg_3, reg_4, reg_5, reg_6, reg_7, reg_8, reg_9, reg_10, reg_11, reg_12, reg_13, reg_14, reg_15, reg_16, reg_17, reg_18, reg_19, reg_20, reg_21, reg_22, reg_23, reg_24, reg_25, reg_26, reg_27, reg_28, reg_29, reg_30, reg_31, aa);
     b = mux5bit<32>(zero, reg_1, reg_2, reg_3, reg_4, reg_5, reg_6, reg_7, reg_8, reg_9, reg_10, reg_11, reg_12, reg_13, reg_14, reg_15, reg_16, reg_17, reg_18, reg_19, reg_20, reg_21, reg_22, reg_23, reg_24, reg_25, reg_26, reg_27, reg_28, reg_29, reg_30, reg_31, ab);
+    t0 = reg_8_next;
 end where
 
 instruction_register(enable, D:[32]) = Q:[32] where
