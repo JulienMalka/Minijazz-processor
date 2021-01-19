@@ -1,5 +1,5 @@
 
-main(reset_n) = (rddata:[32], address:[16], pc_addr:[32], ir_en, branch_op, pc_add_imm, pc_wren, pc_sel_a, pc_sel_imm, rf_wren, sel_addr, sel_b, sel_mem, sel_pc, sel_ra, sel_rC, imm_signed, read, write, op_alu:[6], state:[4], wrdata:[32], cs_ROM_reg, alu_res:[32], a:[32], b:[32], instr:[32], address_reg:[10], rddata_rom:[32], t0:[32]) where
+main(reset_n) = (t0:[32]) where
 (cs_ROM, cs_RAM) = decoder(address);
 (write, read, address, wrdata, pc_addr, ir_en, branch_op, pc_add_imm, pc_wren, pc_sel_a, pc_sel_imm, rf_wren, sel_addr, sel_b, sel_mem, sel_pc, sel_ra, sel_rC, imm_signed, read, write, op_alu, state, alu_res, a, b, instr, t0) = CPU(reset_n, rddata);
 rddata_ram = RAM_block(cs_RAM, read, write, address[4..13], wrdata);

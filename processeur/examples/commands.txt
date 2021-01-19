@@ -1,0 +1,6 @@
+python simulator.py --netlist ../processeur/processor.net --steps 16 --inputs ../processeur/examples/inputs_add_sub.txt --ROM ../processeur/examples/ROM_add_sub.hex --scheduled program.save
+
+python simulator.py --netlist ../processeur/processor.net --steps 148 --inputs ../processeur/examples/inputs_mult.txt --ROM ../processeur/examples/ROM_mult.hex --scheduled program.save
+
+python simulator.py --netlist ../processeur/processor.net --steps 500 --inputs ../processeur/examples/inputs_clock.txt --ROM ../processeur/examples/ROM_clock.hex --clock --scheduled program.save
+
